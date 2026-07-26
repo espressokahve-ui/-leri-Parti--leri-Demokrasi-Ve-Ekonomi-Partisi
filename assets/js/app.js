@@ -257,13 +257,18 @@
     ["Dış Politika & Küresel Barış", ["Sınır komşularıyla 20 yıllık saldırmazlık anlaşmalarını teşvik.","Dezavantajlı ülkelere ciro primiyle adil ticaret.","Kültürlerin yerinde güçlenmesi ve demokrasiyle buluşması.","Ufuk ideali olarak küresel serbest dolaşımı savunmak.","İnsan hakları ve barış temelli onurlu diplomasi."]]
   ];
   var eboard = document.getElementById('eylem-accord');
-  if (eboard){ eylem.forEach(function(w,i){
+  if (eboard){
+    var eGrads = ['linear-gradient(135deg,#E11D2A,#7a0f16)','linear-gradient(135deg,#1f6feb,#0b2f66)','linear-gradient(135deg,#2ea043,#12481f)','linear-gradient(135deg,#d29922,#7a5a10)','linear-gradient(135deg,#8957e5,#3d2668)','linear-gradient(135deg,#e36209,#7a3405)','linear-gradient(135deg,#1b7c83,#0c3a3d)'];
+    eylem.forEach(function(w,i){
     var n = (i+1<10?'0':'')+(i+1);
     var el = document.createElement('div'); el.className='ac';
     var items = w[1].map(function(x){ return '<li style="position:relative; padding-left:20px; color:var(--ink-2); font-size:14.5px"><span style="position:absolute; left:0; top:8px; width:7px; height:7px; border-radius:50%; background:var(--red)"></span>'+x+'</li>'; }).join('');
-    el.innerHTML = '<button class="q"><span class="n">'+n+'</span><span>'+w[0]+'</span><svg class="pl" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="a"><ul style="margin:0; padding:14px 22px 22px 60px; list-style:none; display:flex; flex-direction:column; gap:10px">'+items+'</ul></div>';
+    var banner = '<div class="eylem-banner" style="background:'+eGrads[i%eGrads.length]+'"><div class="eb-topic">'+w[0]+'</div><button type="button" class="eb-cta">Diğerlerini Unutunuz ! Şimdi İncele <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>';
+    el.innerHTML = '<button class="q"><span class="n">'+n+'</span><span>'+w[0]+'</span><svg class="pl" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="a">'+banner+'<ul style="margin:0; padding:14px 22px 22px 60px; list-style:none; display:flex; flex-direction:column; gap:10px">'+items+'</ul></div>';
     var q = el.querySelector('.q'), a = el.querySelector('.a');
     q.addEventListener('click', function(){ var open = el.classList.toggle('open'); a.style.maxHeight = open ? (a.scrollHeight+'px') : '0'; });
+    var cta = el.querySelector('.eb-cta');
+    cta.addEventListener('click', function(e){ e.stopPropagation(); if(window.__openDetay){ window.__openDetay('eylem-'+i, w[0], w[1].join(' · ')); } });
     eboard.appendChild(el);
   }); }
 
@@ -426,6 +431,18 @@
     }
     loadLive();
 
+    // Kategoriler: yerleşik 14 temiz kategori + Supabase'de EKLEDİKLERİN (birleştirilir)
+    SB.from('kategoriler').select('ad').order('sira',{ascending:true}).then(function(res){
+      if(!res.error && res.data && res.data.length){
+        var extra = res.data.map(function(r){ return r.ad; }).filter(function(a){ return a && kategoriler.indexOf(a)===-1; });
+        if(extra.length){
+          kategoriler = kategoriler.concat(extra);
+          fKat.innerHTML = '<option value="">Tüm kategoriler</option>'+kategoriler.map(function(k){return '<option>'+esc(k)+'</option>';}).join('');
+          iKat.innerHTML = kategoriler.map(function(k){return '<option>'+esc(k)+'</option>';}).join('');
+        }
+      }
+    });
+
     form.addEventListener('submit', function(e){
       e.preventDefault();
       SB.auth.getSession().then(function(r){
@@ -449,6 +466,76 @@
           setTimeout(function(){ document.querySelector('.ttab[data-pane="gor"]').click(); window.scrollTo({top:document.getElementById('ticari').offsetTop-70, behavior:'smooth'}); }, 700);
         }).catch(function(err){ say('Hata: '+(err.message||err),false); });
       });
+    });
+  })();
+
+  // ---- Haberler & Etkinlikler (Supabase) ----
+  (function(){
+    var el=document.getElementById('haberler-list'); if(!el || !SB) return;
+    function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    SB.from('haberler').select('*').eq('yayinda',true).order('tarih',{ascending:false}).then(function(res){
+      if(res.error || !res.data || !res.data.length) return; // içerik yoksa yer tutucu kalır
+      el.innerHTML = res.data.map(function(h){
+        var img = h.gorsel ? '<img src="'+esc(h.gorsel)+'" alt="" style="width:100%;height:160px;object-fit:cover;border-radius:10px;margin-bottom:12px">' : '';
+        var tarih = h.tarih ? '<div class="kmono" style="color:var(--ink-3);font-size:12px;margin-bottom:6px">'+esc(h.tarih)+'</div>' : '';
+        return '<div class="card">'+img+tarih+'<h3 style="font-size:18px;margin:0 0 8px">'+esc(h.baslik)+'</h3><p style="color:var(--ink-2);font-size:14px;margin:0">'+esc(h.ozet||'')+'</p></div>';
+      }).join('');
+    });
+  })();
+
+  // ---- Detay + Beğeni + Paylaşım ----
+  (function(){
+    var modal=document.getElementById('detay-modal'); if(!modal) return;
+    var mBaslik=document.getElementById('detay-baslik'), mIcerik=document.getElementById('detay-icerik');
+    var likeBtn=document.getElementById('detay-like'), likeN=document.getElementById('detay-like-n');
+    var curKey=null;
+    function closeM(){ modal.classList.remove('show'); }
+    document.getElementById('detay-x').addEventListener('click', closeM);
+    modal.addEventListener('click', function(e){ if(e.target===modal) closeM(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeM(); });
+
+    function setShare(baslik){
+      var url=location.origin+location.pathname;
+      var txt=encodeURIComponent(baslik+' — İleri Parti'), u=encodeURIComponent(url);
+      document.getElementById('sh-wa').href='https://wa.me/?text='+txt+'%20'+u;
+      document.getElementById('sh-x').href='https://twitter.com/intent/tweet?text='+txt+'&url='+u;
+      document.getElementById('sh-fb').href='https://www.facebook.com/sharer/sharer.php?u='+u;
+    }
+    document.getElementById('sh-copy').addEventListener('click', function(){
+      var url=location.origin+location.pathname, b=this;
+      if(navigator.clipboard){ navigator.clipboard.writeText(url); b.title='Kopyalandı!'; setTimeout(function(){ b.title='Bağlantıyı kopyala'; },1500); }
+    });
+
+    function liked(k){ try{ return localStorage.getItem('begeni_'+k)==='1'; }catch(e){ return false; } }
+    function markLiked(k){ try{ localStorage.setItem('begeni_'+k,'1'); }catch(e){} }
+
+    function openM(key, baslik, fallback){
+      curKey=key; mBaslik.innerHTML=baslik; mIcerik.textContent=fallback||'';
+      likeN.textContent='0'; likeBtn.classList.toggle('liked', liked(key));
+      setShare(mBaslik.textContent); modal.classList.add('show');
+      if(!SB) return;
+      SB.from('detaylar').select('icerik').eq('anahtar',key).maybeSingle().then(function(res){
+        if(res.data && res.data.icerik){ mIcerik.textContent=res.data.icerik; }
+      });
+      SB.from('begeniler').select('sayi').eq('anahtar',key).maybeSingle().then(function(res){
+        likeN.textContent=(res.data && res.data.sayi!=null) ? res.data.sayi : '0';
+      });
+    }
+    window.__openDetay = openM;
+
+    likeBtn.addEventListener('click', function(){
+      if(!curKey) return;
+      if(!SB){ return; }
+      if(liked(curKey)) return;
+      SB.rpc('begeni_ekle', { p_anahtar: curKey }).then(function(res){
+        if(!res.error && res.data!=null){ likeN.textContent=res.data; markLiked(curKey); likeBtn.classList.add('liked'); }
+      });
+    });
+
+    document.querySelectorAll('[data-detay]').forEach(function(el){
+      function go(){ var p=el.querySelector('p'); openM(el.getAttribute('data-detay'), el.getAttribute('data-baslik')||'', p?p.textContent:''); }
+      el.addEventListener('click', go);
+      el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
     });
   })();
 
