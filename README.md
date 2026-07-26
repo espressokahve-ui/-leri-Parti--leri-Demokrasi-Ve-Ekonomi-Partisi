@@ -1,3 +1,4 @@
 # İleri Parti — Web Sitesi
-Modüler statik site + Supabase (Ticari Fırsatlar canlı, ŞİFRELİ giriş).
-Giriş için Supabase > Authentication > Sign In/Providers altında "Confirm email" KAPALI olmalı.
+Modüler statik site + Supabase.
+- Ticari Fırsatlar: canlı, ŞİFRELİ giriş (Confirm email KAPALI olmalı).
+- Kategoriler + Haberler: Supabase tablolarından yönetilir (docs/icerik-kurulum.sql).
