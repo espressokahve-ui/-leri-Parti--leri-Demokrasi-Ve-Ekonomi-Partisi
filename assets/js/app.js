@@ -372,9 +372,10 @@
     var formCard=form.closest('.formcard'); if(formCard) formCard.style.display='none';
     var authBox=document.createElement('div'); authBox.className='formcard'; authBox.style.cssText='max-width:760px;margin-bottom:16px';
     authBox.innerHTML =
-      '<div id="auth-out"><h3>Firma Girişi</h3><p class="sub">İlan vermek için e-posta ile giriş yapın. Şifre yok — gelen bağlantıya tıklarsınız.</p>'+
-      '<div class="field"><label>E-posta</label><input type="email" id="auth-email"></div>'+
-      '<button type="button" id="auth-send" class="btn btn-red">Giriş bağlantısı gönder</button>'+
+      '<div id="auth-out"><h3>Firma Girişi</h3><p class="sub">İlan vermek için giriş yapın. İlk kez geliyorsanız e-posta ve şifre belirleyip "Kayıt ol"a basın (şifre en az 6 karakter).</p>'+
+      '<div class="field"><label>E-posta</label><input type="email" id="auth-email" autocomplete="username"></div>'+
+      '<div class="field"><label>Şifre</label><input type="password" id="auth-pass" autocomplete="current-password"></div>'+
+      '<div style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" id="auth-login" class="btn btn-red">Giriş yap</button><button type="button" id="auth-signup" class="btn btn-ghost">Kayıt ol</button></div>'+
       '<div id="auth-msg" style="margin-top:12px;font-size:14px;color:var(--ink-2)"></div></div>'+
       '<div id="auth-in" style="display:none;align-items:center;gap:14px;flex-wrap:wrap"><span>Giriş yapıldı: <b id="auth-who"></b></span><button type="button" id="auth-out-btn" class="btn btn-ghost" style="padding:8px 16px">Çıkış</button></div>';
     if(formCard) formCard.parentNode.insertBefore(authBox, formCard);
@@ -393,12 +394,26 @@
     SB.auth.getSession().then(function(r){ updateAuth(r.data.session); });
     SB.auth.onAuthStateChange(function(_e, session){ updateAuth(session); });
 
-    document.getElementById('auth-send').addEventListener('click', function(){
-      var email=document.getElementById('auth-email').value.trim(), m=document.getElementById('auth-msg');
-      if(!email){ m.textContent='Lütfen e-posta girin.'; return; }
-      m.textContent='Gönderiliyor…';
-      SB.auth.signInWithOtp({ email:email, options:{ emailRedirectTo: location.href.split('#')[0] } })
-        .then(function(res){ m.textContent = res.error ? ('Hata: '+res.error.message) : 'Giriş bağlantısı e-postanıza gönderildi. Gelen bağlantıya tıklayın.'; });
+    function creds(){ return { email:(document.getElementById('auth-email').value||'').trim(), password:(document.getElementById('auth-pass').value||'') }; }
+    document.getElementById('auth-login').addEventListener('click', function(){
+      var c=creds(), m=document.getElementById('auth-msg');
+      if(!c.email||!c.password){ m.textContent='E-posta ve şifre girin.'; return; }
+      m.textContent='Giriş yapılıyor…';
+      SB.auth.signInWithPassword(c).then(function(res){
+        if(res.error){ m.textContent='Giriş başarısız: '+res.error.message+'  (İlk kez geliyorsanız "Kayıt ol"a basın.)'; }
+        else { m.textContent=''; }
+      });
+    });
+    document.getElementById('auth-signup').addEventListener('click', function(){
+      var c=creds(), m=document.getElementById('auth-msg');
+      if(!c.email||!c.password){ m.textContent='E-posta ve şifre girin.'; return; }
+      if(c.password.length<6){ m.textContent='Şifre en az 6 karakter olmalı.'; return; }
+      m.textContent='Kayıt oluşturuluyor…';
+      SB.auth.signUp(c).then(function(res){
+        if(res.error){ m.textContent='Kayıt hatası: '+res.error.message; }
+        else if(res.data && res.data.session){ m.textContent=''; }
+        else { m.textContent='Kayıt alındı. Şimdi "Giriş yap"a basabilirsiniz.'; }
+      });
     });
     document.getElementById('auth-out-btn').addEventListener('click', function(){ SB.auth.signOut(); });
 
