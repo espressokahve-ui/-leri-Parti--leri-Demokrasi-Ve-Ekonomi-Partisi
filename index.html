@@ -8,330 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#15161B; --ink-2:#3B3E48; --ink-3:#6A6E7A;
-    --paper:#F2F3F5; --white:#FFFFFF; --line:#E2E4E9;
-    --red:#E11D2A; --red-d:#A8141D; --red-t:#FCE9EB; --red-2:#F26670;
-    --shadow:0 1px 2px rgba(21,22,27,.05), 0 14px 34px -20px rgba(21,22,27,.3);
-    --shadow-lg:0 34px 80px -46px rgba(21,22,27,.55);
-    --r:16px;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0; background:var(--paper); color:var(--ink);
-    font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:17px; line-height:1.6;
-    -webkit-font-smoothing:antialiased; overflow-x:hidden}
-  a{color:inherit; text-decoration:none}
-  h1,h2,h3,h4{font-family:"Archivo",sans-serif; margin:0; line-height:1.04; letter-spacing:-.02em}
-  .wrap{max-width:1200px; margin:0 auto; padding:0 24px}
-  .sec{padding:clamp(60px,8vw,110px) 0; scroll-margin-top:78px}
-  .mono{font-family:"IBM Plex Mono",monospace}
-  :focus-visible{outline:3px solid var(--red); outline-offset:3px; border-radius:6px}
-  .eyebrow{font-family:"IBM Plex Mono"; font-size:12.5px; font-weight:500; letter-spacing:.17em;
-    text-transform:uppercase; color:var(--red); display:inline-flex; align-items:center; gap:10px}
-  .eyebrow::before{content:""; width:24px; height:2px; background:var(--red)}
-  .eyebrow.dk{color:#FF6B74}
-  .eyebrow.dk::before{background:#FF6B74}
-
-  .logo{display:inline-flex; flex:none}
-  .logo svg{display:block}
-
-  .btn{display:inline-flex; align-items:center; gap:9px; font-family:"IBM Plex Sans"; font-weight:600;
-    font-size:15.5px; padding:14px 22px; border-radius:999px; border:1.5px solid transparent;
-    cursor:pointer; transition:.2s ease; white-space:nowrap}
-  .btn .chev{transition:transform .2s ease}
-  .btn:hover .chev{transform:translateX(4px)}
-  .btn-red{background:var(--red); color:#fff}
-  .btn-red:hover{background:var(--red-d)}
-  .btn-ghost{background:transparent; color:var(--ink); border-color:var(--line)}
-  .btn-ghost:hover{border-color:var(--ink); background:var(--ink); color:#fff}
-  .btn-on-dark{background:#fff; color:var(--red-d)}
-  .btn-on-dark:hover{background:var(--ink); color:#fff}
-  .btn-on-dark-g{background:transparent; color:#fff; border-color:rgba(255,255,255,.5)}
-  .btn-on-dark-g:hover{background:#fff; color:var(--red-d)}
-
-  header{position:sticky; top:0; z-index:70; background:rgba(242,243,245,.82);
-    backdrop-filter:saturate(1.4) blur(12px); border-bottom:1px solid transparent; transition:.25s}
-  header.scrolled{border-color:var(--line); background:rgba(242,243,245,.95)}
-  .nav{display:flex; align-items:center; justify-content:space-between; height:76px; gap:20px}
-  .brand{display:flex; align-items:center; gap:12px}
-  .brand .bt{display:flex; flex-direction:column; line-height:1.05}
-  .brand .bt b{font-family:"Archivo"; font-weight:800; font-size:18px; letter-spacing:.01em}
-  .brand .bt span{font-size:10.5px; color:var(--ink-3); letter-spacing:.03em; margin-top:3px; font-weight:500}
-  .navlinks{display:flex; align-items:center; gap:1px}
-  .navlinks a{font-size:13.5px; font-weight:500; color:var(--ink-2); padding:9px 10px; border-radius:9px; transition:.15s}
-  .navlinks a:hover{color:var(--ink); background:rgba(21,22,27,.05)}
-  .nli{position:relative}
-  .nlink{font-family:"IBM Plex Sans"; font-size:12.5px; font-weight:600; letter-spacing:.02em; text-transform:uppercase;
-    color:var(--ink-2); padding:9px 10px; border-radius:9px; transition:.15s; background:none; border:none; cursor:pointer;
-    display:inline-flex; align-items:center; gap:6px}
-  .nlink:hover{color:var(--ink); background:rgba(21,22,27,.05)}
-  .nlink .cr{transition:transform .2s}
-  .submenu{position:absolute; top:calc(100% + 8px); left:0; min-width:238px; background:var(--white);
-    border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow-lg); padding:8px; opacity:0; visibility:hidden;
-    transform:translateY(6px); transition:.18s ease; z-index:80}
-  .submenu a{display:block; font-size:14px; font-weight:500; text-transform:none; letter-spacing:0; color:var(--ink-2);
-    padding:10px 12px; border-radius:8px; white-space:nowrap}
-  .submenu a:hover{background:var(--red-t); color:var(--red-d)}
-  .submenu .soon{display:block; font-family:"IBM Plex Mono"; font-size:11.5px; color:var(--ink-3); padding:9px 12px}
-  .nli.has-sub:hover>.submenu, .nli.has-sub:focus-within>.submenu{opacity:1; visibility:visible; transform:translateY(0)}
-  .nli.has-sub:hover .nlink .cr, .nli.open .nlink .cr{transform:rotate(180deg)}
-  .nav-cta{display:flex; align-items:center; gap:10px}
-  .burger{display:none; width:44px; height:44px; border:1px solid var(--line); background:#fff;
-    border-radius:11px; cursor:pointer; align-items:center; justify-content:center; flex-direction:column; gap:4.5px}
-  .burger span{width:19px; height:2px; background:var(--ink); transition:.25s; border-radius:2px}
-  .burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
-  .burger.open span:nth-child(2){opacity:0}
-  .burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
-
-  .hero{position:relative; overflow:hidden; padding:clamp(52px,7vw,96px) 0 clamp(44px,6vw,72px)}
-  .hero .flow{position:absolute; top:8%; right:2%; width:44%; height:84%; overflow:hidden; z-index:0; pointer-events:none}
-  .hero .flow i{position:absolute; left:0; width:44px; height:44px; opacity:0; animation:drift 3.4s linear infinite}
-  @keyframes drift{0%{left:-8%;opacity:0}12%{opacity:.5}88%{opacity:.5}100%{left:108%;opacity:0}}
-  .hero .ghost{position:absolute; right:-4%; top:50%; transform:translateY(-50%); font-family:"Archivo"; font-weight:900;
-    font-size:min(58vw,700px); color:var(--red); opacity:.05; letter-spacing:-.06em; line-height:1; z-index:0; user-select:none}
-  .hero-in{position:relative; z-index:2; max-width:830px}
-  .status{display:inline-flex; align-items:center; gap:9px; font-family:"IBM Plex Mono"; font-size:12px;
-    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); background:var(--white);
-    border:1px solid var(--line); padding:7px 13px; border-radius:999px; margin-bottom:22px}
-  .status .dot{width:8px; height:8px; border-radius:50%; background:var(--red); box-shadow:0 0 0 4px var(--red-t)}
-  .hero h1{font-weight:900; font-size:clamp(38px,6.8vw,80px); letter-spacing:-.035em; margin:0 0 24px; max-width:16ch}
-  .hero h1 em{font-style:normal; color:var(--red)}
-  .hero .lead{font-size:clamp(17px,2vw,21px); color:var(--ink-2); max-width:58ch; margin:0 0 26px}
-  .tagline{display:inline-flex; align-items:center; gap:10px; margin:0 0 26px; font-family:"Archivo";
-    font-weight:700; font-size:14.5px; color:var(--ink); background:var(--white); border:1px solid var(--line);
-    padding:9px 16px 9px 11px; border-radius:999px; box-shadow:var(--shadow)}
-  .cta-row{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:22px}
-  .hashtags{font-family:"IBM Plex Mono"; font-size:13px; color:var(--ink-3)}
-  .hashtags b{color:var(--red-d); font-weight:600}
-
-  .thesis{background:var(--ink); color:#fff; position:relative; overflow:hidden}
-  .thesis .glow{position:absolute; inset:0; background:
-    radial-gradient(620px 320px at 15% 0%, rgba(225,29,42,.28), transparent 60%),
-    radial-gradient(560px 300px at 88% 100%, rgba(225,29,42,.16), transparent 62%)}
-  .thesis .in{position:relative; z-index:2}
-  .thesis .big{font-family:"Archivo"; font-weight:800; font-size:clamp(26px,4vw,44px); letter-spacing:-.02em; max-width:20ch; margin:16px 0 34px}
-  .thesis .big em{font-style:normal; color:var(--red-2)}
-  .contrasts{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
-  .contrast{padding:24px; border:1px solid rgba(255,255,255,.1); border-radius:14px; background:rgba(255,255,255,.035)}
-  .contrast .no{font-family:"IBM Plex Mono"; font-size:13px; color:#8A96A3; text-decoration:line-through}
-  .contrast .yes{font-family:"Archivo"; font-weight:700; font-size:24px; margin-top:6px; color:var(--red-2)}
-  .thesis .foot{margin-top:30px; color:#AEB8C3; font-size:16px; font-style:italic}
-
-  .head{max-width:64ch; margin-bottom:42px}
-  .head h2{font-size:clamp(28px,4.2vw,46px); font-weight:800; margin:16px 0 12px}
-  .head p{color:var(--ink-2); font-size:18px; margin:0}
-
-  .grid{display:grid; gap:16px}
-  .g2{grid-template-columns:repeat(2,1fr)}
-  .g3{grid-template-columns:repeat(3,1fr)}
-  .g4{grid-template-columns:repeat(4,1fr)}
-  .card{background:var(--white); border:1px solid var(--line); border-radius:14px; padding:26px 24px; transition:.2s; position:relative; overflow:hidden}
-  .card:hover{transform:translateY(-4px); box-shadow:var(--shadow); border-color:#D3D6D2}
-  .card .ic{width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; margin-bottom:16px; background:var(--red-t)}
-  .card .ic svg{width:22px; height:22px}
-  .card h3{font-family:"Archivo"; font-weight:700; font-size:19px; margin:0 0 8px; letter-spacing:-.01em}
-  .card p{margin:0; color:var(--ink-2); font-size:14.5px; line-height:1.55}
-  .kmono{font-family:"IBM Plex Mono"; font-size:12px; font-weight:500; letter-spacing:.1em; color:var(--ink-3)}
-  .tags{display:flex; flex-wrap:wrap; gap:7px; margin-top:14px}
-  .tag{font-family:"IBM Plex Mono"; font-size:11.5px; color:var(--ink-2); background:var(--paper); border:1px solid var(--line); padding:5px 9px; border-radius:7px}
-
-  .chiprow{display:flex; flex-wrap:wrap; gap:8px; margin-top:26px}
-  .pchip{font-size:13px; font-weight:500; color:var(--ink-2); background:var(--white); border:1px solid var(--line); padding:8px 13px; border-radius:999px}
-  .pchip b{color:var(--red-d); font-family:"IBM Plex Mono"; font-weight:600; margin-right:6px}
-
-  /* ihtisas flagship */
-  .flagship{background:var(--ink); color:#fff; position:relative; overflow:hidden}
-  .flagship .ghost{position:absolute; left:-3%; bottom:-16%; font-family:"Archivo"; font-weight:900; font-size:min(46vw,540px); color:#fff; opacity:.04; line-height:1; letter-spacing:-.06em}
-  .flagship .in{position:relative; z-index:2}
-  .flagship h2{color:#fff; font-size:clamp(30px,4.6vw,52px); font-weight:900; margin:16px 0 14px; max-width:18ch}
-  .flagship h2 em{font-style:normal; color:var(--red-2)}
-  .flagship .sub{color:#B7C1CC; font-size:19px; max-width:60ch; margin:0 0 40px}
-  .fpillars{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:44px}
-  .fp{padding:26px 22px; border:1px solid rgba(255,255,255,.11); border-radius:14px; background:rgba(255,255,255,.04); transition:.2s}
-  .fp:hover{background:rgba(255,255,255,.07); transform:translateY(-3px)}
-  .fp .n{font-family:"IBM Plex Mono"; font-size:12px; color:var(--red-2); letter-spacing:.08em; font-weight:600}
-  .fp h3{font-family:"Archivo"; color:#fff; font-weight:700; font-size:19px; margin:12px 0 8px}
-  .fp p{margin:0; color:#AEB8C3; font-size:14px; line-height:1.55}
-
-  .silsile-h{font-family:"IBM Plex Mono"; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:#8A96A3; margin-bottom:18px}
-  .silsile{display:grid; grid-template-columns:repeat(4,1fr); gap:0; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.12)}
-  .stage{padding:24px 22px; position:relative; background:rgba(255,255,255,.03)}
-  .stage:not(:last-child)::after{content:""; position:absolute; right:-1px; top:50%; transform:translateY(-50%); z-index:3;
-    border-left:11px solid; border-top:9px solid transparent; border-bottom:9px solid transparent}
-  .stage.s1{background:rgba(225,29,42,.14)} .stage.s1::after{border-left-color:rgba(225,29,42,.14)}
-  .stage.s2{background:rgba(225,29,42,.26)} .stage.s2::after{border-left-color:rgba(225,29,42,.26)}
-  .stage.s3{background:rgba(225,29,42,.42)} .stage.s3::after{border-left-color:rgba(225,29,42,.42)}
-  .stage.s4{background:rgba(225,29,42,.62)}
-  .stage .sn{font-family:"IBM Plex Mono"; font-size:13px; color:#fff; opacity:.7; font-weight:600}
-  .stage h4{font-family:"Archivo"; color:#fff; font-weight:700; font-size:17px; margin:10px 0 6px}
-  .stage p{margin:0; color:#E7EAEF; font-size:13px; line-height:1.5}
-  .flagship .note{margin-top:20px; color:#AEB8C3; font-size:15px; font-style:italic}
-  .target{margin-top:38px; display:flex; align-items:center; gap:18px; padding:24px 26px; border-radius:14px;
-    background:linear-gradient(90deg, rgba(225,29,42,.9), rgba(168,20,29,.9)); flex-wrap:wrap}
-  .target svg{flex:none}
-  .target b{font-family:"Archivo"; font-weight:800; font-size:clamp(18px,2.4vw,24px); color:#fff}
-
-  .tabs{display:flex; gap:8px; margin-bottom:26px; flex-wrap:wrap}
-  .tab{font-family:"Archivo"; font-weight:600; font-size:15px; padding:11px 20px; border-radius:999px;
-    border:1.5px solid var(--line); background:var(--white); color:var(--ink-2); cursor:pointer; transition:.18s}
-  .tab:hover{border-color:var(--ink-3)}
-  .tab.active{background:var(--ink); color:#fff; border-color:var(--ink)}
-  .tabpanel{display:none} .tabpanel.show{display:block}
-
-  .explorer{display:grid; grid-template-columns:300px 1fr; gap:22px; align-items:start}
-  .regions{display:flex; flex-direction:column; gap:8px}
-  .region{display:flex; align-items:center; justify-content:space-between; gap:10px; text-align:left;
-    font-family:"Archivo"; font-weight:600; font-size:15px; padding:14px 16px; border-radius:12px;
-    border:1.5px solid var(--line); background:var(--white); color:var(--ink); cursor:pointer; transition:.16s}
-  .region:hover{border-color:var(--ink-3)}
-  .region.active{border-color:var(--red); background:var(--red-t)}
-  .region .ar{opacity:0; transform:translateX(-4px); transition:.16s}
-  .region.active .ar{opacity:1; transform:none}
-  .rpanel{background:var(--white); border:1px solid var(--line); border-radius:16px; padding:30px; min-height:280px; box-shadow:var(--shadow)}
-  .rpanel h3{font-family:"Archivo"; font-weight:800; font-size:26px; margin:0 0 6px}
-  .rpanel .badge{font-family:"IBM Plex Mono"; font-size:11.5px; letter-spacing:.08em; color:var(--red-d); background:var(--red-t); padding:5px 10px; border-radius:7px; display:inline-block; margin-bottom:18px}
-  .rrow{display:grid; grid-template-columns:160px 1fr; gap:14px; padding:16px 0; border-top:1px solid var(--line)}
-  .rrow .l{font-family:"IBM Plex Mono"; font-size:12px; letter-spacing:.06em; color:var(--ink-3); text-transform:uppercase; padding-top:2px}
-  .rrow .v{color:var(--ink-2); font-size:15px}
-  .rnote{margin-top:18px; font-size:13.5px; color:var(--ink-3); display:flex; gap:9px; align-items:flex-start}
-  .mapctrls{display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:18px}
-  .mapsearch{flex:1 1 200px; max-width:280px; font-family:"IBM Plex Sans"; font-size:15px; color:var(--ink);
-    background:var(--white); border:1.5px solid var(--line); border-radius:10px; padding:11px 15px; transition:.15s}
-  .mapsearch:focus{outline:none; border-color:var(--red)}
-  .mapwrap{display:grid; grid-template-columns:1.15fr 1fr; gap:22px; align-items:start}
-  .ilgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:8px; max-height:460px;
-    overflow:auto; padding:10px; border:1px solid var(--line); border-radius:14px; background:var(--white)}
-  .ilbtn{font-family:"IBM Plex Sans"; font-weight:500; font-size:13.5px; padding:10px 11px; border-radius:9px;
-    border:1px solid var(--line); background:var(--paper); color:var(--ink); cursor:pointer; text-align:left; transition:.14s}
-  .ilbtn:hover{border-color:var(--red); background:var(--red-t); color:var(--red-d)}
-  .ilbtn.active{background:var(--red); color:#fff; border-color:var(--red)}
-  .ilempty{grid-column:1/-1; color:var(--ink-3); font-size:14px; padding:14px}
-
-  .accord{display:flex; flex-direction:column; gap:10px}
-  .ac{border:1px solid var(--line); border-radius:13px; background:var(--white); overflow:hidden}
-  .ac .q{display:flex; align-items:center; gap:16px; width:100%; text-align:left; padding:20px 22px; background:none; border:none; cursor:pointer; font-family:"Archivo"; font-weight:600; font-size:16.5px; color:var(--ink)}
-  .ac .q .n{font-family:"IBM Plex Mono"; font-size:13px; color:var(--red); font-weight:600; flex:none; width:26px}
-  .ac .q .pl{margin-left:auto; flex:none; transition:transform .25s; color:var(--ink-3)}
-  .ac.open .q .pl{transform:rotate(45deg)}
-  .ac .a{max-height:0; overflow:hidden; transition:max-height .3s ease}
-  .ac .a p{margin:0; padding:0 22px 22px 64px; color:var(--ink-2); font-size:15px}
-
-  .filterbar{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px; align-items:center}
-  .fchip{font-family:"IBM Plex Sans"; font-weight:600; font-size:13.5px; padding:9px 15px; border-radius:999px; border:1.5px solid var(--line); background:var(--white); color:var(--ink-2); cursor:pointer; transition:.16s}
-  .fchip:hover{border-color:var(--ink-3)}
-  .fchip.active{background:var(--red); color:#fff; border-color:var(--red)}
-  .listing{background:var(--white); border:1px solid var(--line); border-radius:14px; padding:22px; transition:.2s}
-  .listing:hover{box-shadow:var(--shadow); transform:translateY(-3px)}
-  .listing .top{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px}
-  .listing .sect{font-family:"IBM Plex Mono"; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--red-d); background:var(--red-t); padding:5px 10px; border-radius:7px}
-  .listing .reg{font-family:"IBM Plex Mono"; font-size:12px; color:var(--ink-3)}
-  .listing h3{font-family:"Archivo"; font-weight:700; font-size:18px; margin:0 0 8px}
-  .listing p{margin:0 0 16px; color:var(--ink-2); font-size:14px}
-  .listing .lk{font-weight:600; font-size:14px; color:var(--red-d); display:inline-flex; align-items:center; gap:7px}
-  .sample-note{font-family:"IBM Plex Mono"; font-size:11px; color:var(--ink-3); background:var(--paper); border:1px dashed var(--line); padding:4px 9px; border-radius:6px}
-
-  .ladder{display:flex; flex-direction:column; gap:12px; margin-top:8px}
-  .rung{display:grid; grid-template-columns:60px 1fr; gap:20px; align-items:center; background:var(--white); border:1px solid var(--line); border-radius:14px; padding:20px 24px; position:relative; overflow:hidden}
-  .rung::before{content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--red)}
-  .rung.a1::before{background:#C9CDD4} .rung.a2::before{background:var(--red-2)} .rung.a3::before{background:var(--red)} .rung.a4::before{background:var(--red-d)}
-  .rung .sy{width:50px; height:50px; border-radius:13px; display:flex; align-items:center; justify-content:center; background:var(--red-t); color:var(--red-d)}
-  .rung.a1 .sy{background:#EEF0F3; color:#5B6875}
-  .rung .sy svg{width:24px; height:24px}
-  .rung h4{font-family:"Archivo"; font-weight:700; font-size:19px; margin:0 0 3px}
-  .rung p{margin:0; color:var(--ink-2); font-size:14px}
-  .rung .lvl{font-family:"IBM Plex Mono"; font-size:12px; color:var(--ink-3); letter-spacing:.06em}
-  /* forms */
-  .forms{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px}
-  .formcard{background:var(--white); border:1px solid var(--line); border-radius:16px; padding:28px; box-shadow:var(--shadow)}
-  .formcard h3{font-family:"Archivo"; font-weight:700; font-size:20px; margin:0 0 6px}
-  .formcard .sub{color:var(--ink-3); font-size:14px; margin:0 0 20px}
-  .field{margin-bottom:14px}
-  .field label{display:block; font-size:13px; font-weight:600; color:var(--ink-2); margin-bottom:6px}
-  .field input, .field select, .field textarea{width:100%; font-family:"IBM Plex Sans"; font-size:15px; color:var(--ink);
-    background:var(--paper); border:1.5px solid var(--line); border-radius:10px; padding:12px 14px; transition:.15s}
-  .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--red); background:#fff}
-  .field textarea{resize:vertical; min-height:88px}
-  .formmsg{display:none; text-align:center; padding:24px; background:var(--red-t); border:1px solid #F3C9CD; border-radius:12px; color:var(--red-d); font-weight:600}
-  .formmsg.show{display:block}
-  .hp{position:absolute; left:-9999px}
-
-  .join{background:var(--red); color:#fff; position:relative; overflow:hidden}
-  .join .ghost{position:absolute; left:-3%; top:-32%; font-family:"Archivo"; font-weight:900; font-size:min(46vw,520px); color:#fff; opacity:.08; line-height:1; letter-spacing:-.06em}
-  .join .in{position:relative; z-index:2; text-align:center; max-width:50ch; margin:0 auto}
-  .join h2{color:#fff; font-size:clamp(28px,4.4vw,50px); font-weight:900; margin:0 0 14px}
-  .join p{color:#FFE0E2; font-size:18px; margin:0 0 28px}
-  .join .cta-row{justify-content:center; margin-bottom:0}
-
-  .mini{display:grid; gap:12px; grid-template-columns:repeat(4,1fr)}
-  .minicard{background:var(--white); border:1px solid var(--line); border-radius:12px; padding:20px}
-  .minicard b{font-family:"Archivo"; font-weight:600; font-size:16px; display:block; margin-bottom:5px}
-  .minicard span{font-size:13px; color:var(--ink-3)}
-
-  footer{background:var(--ink); color:#B0BAC5; padding:60px 0 28px}
-  .f-top{display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:36px; padding-bottom:36px; border-bottom:1px solid rgba(255,255,255,.1)}
-  .f-brand b{font-family:"Archivo"; font-weight:800; font-size:18px; color:#fff; display:block}
-  .f-brand>div>span{font-size:12px; color:#8792A0}
-  .f-brand .slogan{font-family:"Archivo"; font-weight:600; color:#fff; margin:18px 0 8px; font-size:15.5px}
-  .f-brand .umb{font-size:13px; color:#8792A0; max-width:36ch; line-height:1.6}
-  .f-brand .umb b{color:#CBD3DC; font-weight:600}
-  .f-col h4{font-family:"IBM Plex Mono"; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#8792A0; margin:0 0 15px; font-weight:500}
-  .f-col a, .f-col p{display:block; color:#C2CAD3; font-size:14px; margin-bottom:10px; transition:.15s}
-  .f-col a:hover{color:#fff}
-  .f-bottom{display:flex; justify-content:space-between; align-items:center; gap:14px; padding-top:22px; flex-wrap:wrap}
-  .f-bottom .mono{font-size:12px; color:#7A8592}
-
-  .reveal{opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease}
-  .reveal.in{opacity:1; transform:none}
-
-  @media(max-width:1000px){
-    .navlinks a{padding:9px 7px; font-size:12.5px}
-    .g4,.g3{grid-template-columns:repeat(2,1fr)}
-    .mini,.fpillars{grid-template-columns:repeat(2,1fr)}
-    .silsile{grid-template-columns:repeat(2,1fr)}
-    .stage:nth-child(2)::after{display:none}
-    .explorer{grid-template-columns:1fr}
-    .regions{flex-direction:row; flex-wrap:wrap}
-    .region{flex:1 1 40%}
-    .hero .flow{display:none}
-  }
-  @media(max-width:820px){
-    .navlinks{position:fixed; inset:76px 0 auto 0; flex-direction:column; align-items:stretch; background:var(--white); border-bottom:1px solid var(--line); padding:14px 18px 20px; gap:3px; transform:translateY(-150%); transition:transform .3s; box-shadow:var(--shadow)}
-    .navlinks.show{transform:translateY(0)}
-    .navlinks a{padding:14px 12px; font-size:16px; border-radius:11px}
-    .nli{width:100%}
-    .nlink{width:100%; justify-content:space-between; font-size:15px; padding:14px 12px}
-    .submenu{position:static; opacity:1; visibility:visible; transform:none; box-shadow:none; border:none;
-      padding:0 0 6px 10px; min-width:0; max-height:0; overflow:hidden; transition:max-height .25s ease}
-    .nli.open>.submenu{max-height:640px}
-    .submenu a{font-size:15px; padding:12px}
-    .nav-cta .btn{display:none}
-    .burger{display:flex}
-    .contrasts{grid-template-columns:1fr}
-    .f-top{grid-template-columns:1fr; gap:28px}
-    .forms{grid-template-columns:1fr}
-    .mapwrap{grid-template-columns:1fr}
-    .ilgrid{max-height:300px}
-  }
-  @media(max-width:620px){
-    body{font-size:16px}
-    .g2,.g3,.g4,.mini,.fpillars{grid-template-columns:1fr}
-    .silsile{grid-template-columns:1fr}
-    .stage::after{display:none !important}
-    .region{flex:1 1 100%}
-    .rrow{grid-template-columns:1fr; gap:5px}
-    .cta-row .btn{flex:1 1 auto; justify-content:center}
-    .ac .a p{padding-left:22px}
-  }
-  @media(prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    .hero .flow i{animation:none !important}
-    .hero .flow{display:none}
-    .reveal{opacity:1; transform:none; transition:none}
-    .btn,.card,.listing,.tab,.fp{transition:none}
-  }
-</style>
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
@@ -388,6 +65,7 @@
           <a href="#teskilat">Parti İçi Eğitim</a>
         </div>
       </div>
+      <div class="nli"><a class="nlink" href="#ticari">Ticari Fırsatlar</a></div>
       <div class="nli"><a class="nlink" href="#katil">Bize Katılın</a></div>
       <div class="nli"><a class="nlink" href="#katil">Sizi Dinliyoruz</a></div>
       <div class="nli"><a class="nlink" href="#politika">Haberler</a></div>
@@ -652,6 +330,61 @@
     </div>
   </section>
 
+  <!-- TİCARİ FIRSATLAR -->
+  <section class="sec" id="ticari" style="background:var(--white); border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="eyebrow">Ticari Fırsatlar</span>
+        <h2>Bayi arayan firmalar &amp; girişimciler buluşuyor</h2>
+        <p>Firmalar bayi aradıkları ürün ve bölgeyi ilan eder; bayilik almak isteyen girişimciler filtreleyip doğrudan iletişime geçer. Yerinde yerel kalkınmanın ticari zeminidir.</p>
+      </div>
+
+      <div class="notice reveal" id="ticari-notice">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <span><b>Önizleme.</b> Canlı ilan sistemi — firma girişi, ilan kaydı ve fotoğraf yükleme — bir sonraki adımda ücretsiz bir arka uçla (Supabase) devreye alınacak. Şu an alanları ve akışı görüyorsunuz; gönderilen ilanlar henüz kaydedilmez.</span>
+      </div>
+
+      <div class="ticari-toggle reveal">
+        <button class="ttab active" data-pane="gor">İlanları Gör</button>
+        <button class="ttab" data-pane="ver">İlan Ver</button>
+      </div>
+
+      <div class="tpane show reveal" id="pane-gor">
+        <div class="tfilters">
+          <div class="field"><label>Kategori</label><select id="f-kategori"></select></div>
+          <div class="field"><label>Bölge</label><select id="f-bolge"></select></div>
+          <div class="field" style="flex:1 1 200px"><label>Ara</label><input type="text" id="f-ara" class="mapsearch" style="max-width:none; width:100%" placeholder="Firma veya ürün ara…"></div>
+        </div>
+        <div class="grid g3" id="ticari-list" style="margin-top:20px"></div>
+      </div>
+
+      <div class="tpane reveal" id="pane-ver">
+        <div class="formcard" style="max-width:760px">
+          <h3>İlan Ver</h3>
+          <p class="sub">Bayi aradığın ürün ve bölgeyi paylaş. (Önizleme — henüz kaydedilmez.)</p>
+          <form id="form-ilan">
+            <div class="field"><label>Firma adı</label><input type="text" id="i-firma" required></div>
+            <div class="frow">
+              <div class="field"><label>Yetkili</label><input type="text" id="i-yetkili"></div>
+              <div class="field"><label>İletişim (e-posta / telefon)</label><input type="text" id="i-iletisim" required></div>
+            </div>
+            <div class="field"><label>Kategori</label><select id="i-kategori"></select></div>
+            <div class="field"><label>Ürün / hizmet açıklaması</label><textarea id="i-urunler" placeholder="Ürettiğiniz veya sattığınız ürünler…"></textarea></div>
+            <div class="field"><label>Ürün fotoğrafları (opsiyonel)</label><input type="file" id="i-foto" accept="image/*" multiple><div class="thumbs" id="i-thumbs"></div></div>
+            <div class="frow">
+              <div class="field"><label>Bayi aranan bölge</label><select id="i-bolge"></select></div>
+              <div class="field"><label>Şehir</label><select id="i-sehir"></select></div>
+            </div>
+            <div class="field"><label>İlçe (opsiyonel)</label><input type="text" id="i-ilce"></div>
+            <button type="submit" class="btn btn-red" style="width:100%; justify-content:center">İlanı yayımla (önizleme)
+              <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- POLİTİKA & HABERLER -->
   <section class="sec" id="politika">
     <div class="wrap">
@@ -819,6 +552,7 @@
         <a href="#demokrasi">İleri Demokrasi</a>
         <a href="#dunya">Dünya İçin Vizyon</a>
         <a href="#eylem">Eylem Planları</a>
+        <a href="#ticari">Ticari Fırsatlar</a>
         <a href="#teskilat">Teşkilat &amp; Kurullar</a>
         <a href="#sss">Sorular / Cevaplar</a>
       </div>
@@ -837,290 +571,7 @@
   </div>
 </footer>
 
-<script>
-  (function(){
-    var tpl = document.getElementById('logoTpl');
-    document.querySelectorAll('.logo-slot').forEach(function(s){
-      var svg = tpl.content.firstElementChild.cloneNode(true);
-      var w = s.getAttribute('data-w') || 40;
-      svg.setAttribute('width', w); svg.setAttribute('height', w);
-      s.appendChild(svg);
-    });
-  })();
-
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  var header = document.getElementById('header');
-  window.addEventListener('scroll', function(){ header.classList.toggle('scrolled', window.scrollY>8); }, {passive:true});
-
-  var burger = document.getElementById('burger'), navlinks = document.getElementById('navlinks');
-  burger.addEventListener('click', function(){
-    var o = navlinks.classList.toggle('show'); burger.classList.toggle('open', o); burger.setAttribute('aria-expanded', o);
-  });
-  navlinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){
-    navlinks.classList.remove('show'); burger.classList.remove('open'); burger.setAttribute('aria-expanded', false);
-    document.querySelectorAll('.nli.open').forEach(function(x){x.classList.remove('open')});
-  });});
-  // dropdowns: tap-to-expand on mobile, hover handles desktop
-  document.querySelectorAll('.nli.has-sub > .nlink').forEach(function(btn){
-    btn.addEventListener('click', function(e){
-      if (window.matchMedia('(max-width:820px)').matches){
-        e.preventDefault();
-        var li = btn.parentElement;
-        var willOpen = !li.classList.contains('open');
-        document.querySelectorAll('.nli.open').forEach(function(x){ if(x!==li) x.classList.remove('open'); });
-        li.classList.toggle('open', willOpen);
-        btn.setAttribute('aria-expanded', willOpen);
-      }
-    });
-  });
-
-  document.querySelectorAll('.tab').forEach(function(t){
-    t.addEventListener('click', function(){
-      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
-      document.querySelectorAll('.tabpanel').forEach(function(x){x.classList.remove('show')});
-      t.classList.add('active');
-      document.getElementById(t.getAttribute('data-tab')).classList.add('show');
-    });
-  });
-
-  // hero chevron flow
-  if (!reduce) {
-    var flow = document.getElementById('flow');
-    var chev = '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
-    for (var i=0;i<7;i++){
-      var el = document.createElement('i'); el.innerHTML = chev;
-      el.style.top = (6 + i*13) + '%'; el.style.animationDelay = (i*0.42)+'s'; el.style.animationDuration = (3+(i%3)*0.5)+'s';
-      flow.appendChild(el);
-    }
-  }
-
-  var iller = [
-    {il:"İstanbul", b:"Marmara", m:"Sanayi, finans, ticaret ve lojistiğin merkezi."},
-    {il:"Bursa", b:"Marmara", m:"Otomotiv ve tekstil sanayii güçlü."},
-    {il:"Kocaeli", b:"Marmara", m:"Ağır sanayi ve petrokimya merkezi."},
-    {il:"Balıkesir", b:"Marmara", m:"Tarım, hayvancılık ve gıda."},
-    {il:"Tekirdağ", b:"Marmara", m:"Sanayi ve tarımın bir arada olduğu üretken taban."},
-    {il:"Sakarya", b:"Marmara", m:"Otomotiv yan sanayi ve tarım."},
-    {il:"Çanakkale", b:"Marmara", m:"Tarım, gıda ve turizm."},
-    {il:"Edirne", b:"Marmara", m:"Tarım ve sınır ticareti."},
-    {il:"Kırklareli", b:"Marmara", m:"Tarım ve sanayi."},
-    {il:"Yalova", b:"Marmara", m:"Süs bitkiciliği ve turizm."},
-    {il:"Bilecik", b:"Marmara", m:"Seramik ve mermer."},
-    {il:"İzmir", b:"Ege", m:"Liman, sanayi, tarım ve ticaret merkezi."},
-    {il:"Manisa", b:"Ege", m:"Elektronik, tarım ve gıda."},
-    {il:"Aydın", b:"Ege", m:"Tarım (incir, zeytin) ve jeotermal."},
-    {il:"Denizli", b:"Ege", m:"Tekstil ve ev tekstili."},
-    {il:"Muğla", b:"Ege", m:"Turizm ve tarım."},
-    {il:"Afyonkarahisar", b:"Ege", m:"Mermer, gıda ve termal turizm."},
-    {il:"Kütahya", b:"Ege", m:"Seramik ve madencilik."},
-    {il:"Uşak", b:"Ege", m:"Tekstil ve deri."},
-    {il:"Antalya", b:"Akdeniz", m:"Turizm ve seracılık."},
-    {il:"Adana", b:"Akdeniz", m:"Tarım ve sanayi."},
-    {il:"Mersin", b:"Akdeniz", m:"Liman, lojistik ve tarım."},
-    {il:"Hatay", b:"Akdeniz", m:"Gıda, sanayi ve sınır ticareti."},
-    {il:"Kahramanmaraş", b:"Akdeniz", m:"Tekstil ve gıda."},
-    {il:"Isparta", b:"Akdeniz", m:"Gül, kozmetik ve tarım."},
-    {il:"Burdur", b:"Akdeniz", m:"Tarım, hayvancılık ve mermer."},
-    {il:"Osmaniye", b:"Akdeniz", m:"Tarım ve sanayi."},
-    {il:"Ankara", b:"İç Anadolu", m:"Başkent; savunma, teknoloji ve sanayi."},
-    {il:"Konya", b:"İç Anadolu", m:"Tarım, gıda ve makine sanayii."},
-    {il:"Kayseri", b:"İç Anadolu", m:"Mobilya ve sanayi."},
-    {il:"Eskişehir", b:"İç Anadolu", m:"Sanayi, ulaşım araçları ve üniversite."},
-    {il:"Sivas", b:"İç Anadolu", m:"Sanayi, madencilik ve tarım."},
-    {il:"Yozgat", b:"İç Anadolu", m:"Tarım ve hayvancılık."},
-    {il:"Aksaray", b:"İç Anadolu", m:"Otomotiv yan sanayi ve tarım."},
-    {il:"Karaman", b:"İç Anadolu", m:"Gıda ve tarım."},
-    {il:"Kırıkkale", b:"İç Anadolu", m:"Savunma ve makine sanayii."},
-    {il:"Kırşehir", b:"İç Anadolu", m:"Tarım ve madencilik."},
-    {il:"Nevşehir", b:"İç Anadolu", m:"Turizm ve tarım."},
-    {il:"Niğde", b:"İç Anadolu", m:"Tarım ve madencilik."},
-    {il:"Çankırı", b:"İç Anadolu", m:"Tarım ve madencilik (tuz)."},
-    {il:"Samsun", b:"Karadeniz", m:"Liman, tarım ve sanayi."},
-    {il:"Trabzon", b:"Karadeniz", m:"Liman, fındık ve turizm."},
-    {il:"Ordu", b:"Karadeniz", m:"Fındık ve tarım."},
-    {il:"Rize", b:"Karadeniz", m:"Çay ve tarım."},
-    {il:"Giresun", b:"Karadeniz", m:"Fındık ve tarım."},
-    {il:"Tokat", b:"Karadeniz", m:"Tarım ve gıda."},
-    {il:"Amasya", b:"Karadeniz", m:"Tarım (elma) ve gıda."},
-    {il:"Çorum", b:"Karadeniz", m:"Gıda (leblebi) ve makine sanayii."},
-    {il:"Kastamonu", b:"Karadeniz", m:"Orman ürünleri ve tarım."},
-    {il:"Sinop", b:"Karadeniz", m:"Balıkçılık, orman ve turizm."},
-    {il:"Zonguldak", b:"Karadeniz", m:"Madencilik (kömür) ve sanayi."},
-    {il:"Karabük", b:"Karadeniz", m:"Demir-çelik sanayii."},
-    {il:"Bartın", b:"Karadeniz", m:"Tarım, orman ve liman."},
-    {il:"Düzce", b:"Karadeniz", m:"Tarım ve sanayi."},
-    {il:"Bolu", b:"Karadeniz", m:"Turizm, tarım ve orman."},
-    {il:"Gümüşhane", b:"Karadeniz", m:"Madencilik ve tarım."},
-    {il:"Bayburt", b:"Karadeniz", m:"Tarım ve hayvancılık."},
-    {il:"Artvin", b:"Karadeniz", m:"Orman, madencilik ve turizm."},
-    {il:"Erzurum", b:"Doğu Anadolu", m:"Hayvancılık, tarım ve kış turizmi."},
-    {il:"Malatya", b:"Doğu Anadolu", m:"Kayısı ve tarım."},
-    {il:"Elazığ", b:"Doğu Anadolu", m:"Tarım, madencilik ve enerji."},
-    {il:"Van", b:"Doğu Anadolu", m:"Hayvancılık, tarım ve sınır ticareti."},
-    {il:"Ağrı", b:"Doğu Anadolu", m:"Hayvancılık ve sınır ticareti."},
-    {il:"Kars", b:"Doğu Anadolu", m:"Hayvancılık ve süt ürünleri (kaşar)."},
-    {il:"Erzincan", b:"Doğu Anadolu", m:"Tarım, madencilik ve hayvancılık."},
-    {il:"Muş", b:"Doğu Anadolu", m:"Tarım ve hayvancılık."},
-    {il:"Bitlis", b:"Doğu Anadolu", m:"Tarım ve hayvancılık."},
-    {il:"Bingöl", b:"Doğu Anadolu", m:"Tarım, hayvancılık ve arıcılık."},
-    {il:"Tunceli", b:"Doğu Anadolu", m:"Tarım, hayvancılık ve arıcılık."},
-    {il:"Hakkari", b:"Doğu Anadolu", m:"Hayvancılık ve sınır ticareti."},
-    {il:"Iğdır", b:"Doğu Anadolu", m:"Tarım (kayısı) ve sınır ticareti."},
-    {il:"Ardahan", b:"Doğu Anadolu", m:"Hayvancılık ve süt ürünleri."},
-    {il:"Gaziantep", b:"Güneydoğu Anadolu", m:"Gıda, tekstil ve sanayi merkezi."},
-    {il:"Şanlıurfa", b:"Güneydoğu Anadolu", m:"Tarım (GAP) ve gıda."},
-    {il:"Diyarbakır", b:"Güneydoğu Anadolu", m:"Tarım, ticaret ve gıda."},
-    {il:"Mardin", b:"Güneydoğu Anadolu", m:"Tarım, turizm ve sınır ticareti."},
-    {il:"Batman", b:"Güneydoğu Anadolu", m:"Petrol ve tarım."},
-    {il:"Adıyaman", b:"Güneydoğu Anadolu", m:"Tarım ve tekstil."},
-    {il:"Siirt", b:"Güneydoğu Anadolu", m:"Tarım (fıstık) ve hayvancılık."},
-    {il:"Şırnak", b:"Güneydoğu Anadolu", m:"Sınır ticareti ve madencilik."},
-    {il:"Kilis", b:"Güneydoğu Anadolu", m:"Tarım (zeytin) ve sınır ticareti."}
-  ];
-  var ilgrid = document.getElementById('ilgrid'), rpanel = document.getElementById('rpanel');
-  var ilfilter = document.getElementById('ilfilter'), ilsearch = document.getElementById('ilsearch');
-  var bolgeler = ["Tümü","Marmara","Ege","Akdeniz","İç Anadolu","Karadeniz","Doğu Anadolu","Güneydoğu Anadolu"];
-  var activeBolge = "Tümü", selectedIl = null;
-  function trLower(s){ return (s||'').toLocaleLowerCase('tr'); }
-  function drawIl(x){
-    selectedIl = x.il;
-    rpanel.innerHTML =
-      '<h3>'+x.il+'</h3><span class="badge">'+x.b+' · taslak</span>'+
-      '<div class="rrow"><span class="l">Öne çıkan</span><span class="v">'+x.m+'</span></div>'+
-      '<div class="rrow"><span class="l">İhtisas ürünü</span><span class="v" style="color:var(--ink-3)">Birlikte belirlenecek — bu il için ihtisas ürününü öner.</span></div>'+
-      '<div class="rrow"><span class="l">Öneri</span><span class="v" style="color:var(--ink-3)">Birlikte belirlenecek.</span></div>'+
-      '<div class="rnote"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg><span>'+x.il+' için ihtisas dosyasını hemşehri dernekleri, ticaret odaları ve akademiyle birlikte açıyoruz. Öneri eklemek için partiye katılın.</span></div>';
-    ilgrid.querySelectorAll('.ilbtn').forEach(function(el){ el.classList.toggle('active', el.getAttribute('data-il')===x.il); });
-  }
-  function renderIller(){
-    var q = trLower(ilsearch ? ilsearch.value : '');
-    var list = iller.filter(function(x){ return (activeBolge==="Tümü" || x.b===activeBolge) && trLower(x.il).indexOf(q)>-1; });
-    if(!list.length){ ilgrid.innerHTML = '<div class="ilempty">Eşleşen il yok.</div>'; return; }
-    ilgrid.innerHTML = list.map(function(x){ return '<button class="ilbtn'+(x.il===selectedIl?' active':'')+'" data-il="'+x.il+'">'+x.il+'</button>'; }).join('');
-    ilgrid.querySelectorAll('.ilbtn').forEach(function(btn){
-      btn.addEventListener('click', function(){ var f = iller.filter(function(y){ return y.il===btn.getAttribute('data-il'); })[0]; drawIl(f); });
-    });
-  }
-  if (ilgrid && ilfilter){
-    bolgeler.forEach(function(bn){
-      var c = document.createElement('button'); c.className = 'fchip'+(bn==="Tümü"?' active':''); c.textContent = bn;
-      c.addEventListener('click', function(){
-        activeBolge = bn;
-        ilfilter.querySelectorAll('.fchip').forEach(function(z){ z.classList.remove('active'); });
-        c.classList.add('active'); renderIller();
-      });
-      ilfilter.appendChild(c);
-    });
-    if (ilsearch) ilsearch.addEventListener('input', renderIller);
-    renderIller();
-    drawIl(iller[0]);
-  }
-
-  var webinars = [
-    ["İleri Demokrasi Nedir? Katılımcı Yönetimden Üretken Topluma","Demokrasi yalnızca oy vermek midir, yoksa birlikte üretmek mi?"],
-    ["Yerel Kalkınmanın Anahtarı: Kooperatifler, Bayilikler ve Girişimcilik","Küçük şehirlerden büyük ekonomik ağlar nasıl kurulur?"],
-    ["Yerelden Küresele: Şehirlerin Ekonomik Gücü Nasıl Artırılır?","Belediyeler, STK'lar ve özel sektör birlikte nasıl çalışabilir?"],
-    ["Bayilik Sistemleri: Girişimciler İçin Fırsatlar ve Riskler","Bayi olmak isteyenler nelere dikkat etmeli, hangi modeller sürdürülebilir?"],
-    ["Adil Ekonomi Mümkün mü? Gelir Dağılımı, Üretim ve Sosyal Refah","Piyasa ile sosyal adalet arasındaki denge nasıl kurulur?"],
-    ["Dijital Demokrasi ve E-Katılım Modelleri","Teknoloji, yurttaşı karar süreçlerine nasıl dahil eder?"],
-    ["Yeşil Kalkınma: Sürdürülebilir Ekonomi Yerelden Nasıl Başlar?","Çevreyi koruyarak büyümek mümkün mü?"],
-    ["Gençler ve Kadınlar İçin Ekonomik Katılım Modelleri","İstihdam, girişimcilik ve temsilde yeni yollar."],
-    ["Türkiye ve Dünya Örnekleriyle Başarılı Yerel Kalkınma Hikâyeleri","Hangi şehirler başardı, neden başardı?"],
-    ["Sivil Toplumun Ekonomideki Rolü: STK'lar Ne Üretebilir?","Sivil toplum yalnızca eleştirir mi, çözüm de üretir mi?"]
-  ];
-  var accord = document.getElementById('accord');
-  webinars.forEach(function(w,i){
-    var n = (i+1<10?'0':'')+(i+1);
-    var el = document.createElement('div'); el.className='ac';
-    el.innerHTML = '<button class="q"><span class="n">'+n+'</span><span>'+w[0]+'</span><svg class="pl" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="a"><p>'+w[1]+'</p></div>';
-    var q = el.querySelector('.q'), a = el.querySelector('.a');
-    q.addEventListener('click', function(){ var open = el.classList.toggle('open'); a.style.maxHeight = open ? (a.scrollHeight+'px') : '0'; });
-    accord.appendChild(el);
-  });
-
-  var sss = [
-    ["Teşkilatlanma çalışmaları","İleri Parti kuruluş aşamasındadır. İl ve ilçe teşkilatlanması ile kurucu kadro çalışmaları sürmektedir; katılmak isteyenler Bize Katılın bölümünden ulaşabilir."],
-    ["Üyelik ve bağışlar","Üyelik ve gönüllülük herkese açıktır. Üye ol ve Gönüllü ol adımları çevrimiçi başvuruyla ilerleyecek; bağış ve mali şeffaflık süreçleri kuruluşla birlikte duyurulacaktır."],
-    ["İhtisas şehirciliği nedir?","Her şehrin tek bir üründe uzmanlaşıp o üründe dünya markası olmasını hedefleyen kalkınma modelimizdir. Ayrıntı için İhtisas Şehirciliği bölümüne bakabilirsiniz."],
-    ["Yerinde yerel kalkınma ne demek?","Kalkınmayı merkezden değil, her şehrin kendi kaynak ve yetenekleriyle yerinde büyütmektir. Her il, kendine yeten ve dünyaya satan bir üretim merkezine dönüşür."],
-    ["Siyasi yelpazede neredesiniz?","İleri Parti kendini kalıplaşmış sağ-sol ekseninden çok; üretim, adalet, liyakat ve doğrudan demokrasi ilkeleri üzerinden tanımlar. Amacımız toplumun her kesimini üretimde ve karar süreçlerinde buluşturmaktır."],
-    ["Neyi farklı yapıyorsunuz?","Siyaseti araç, üretim ve paylaşımı amaç görüyoruz. Vatandaşı yalnızca seçmen değil; aktif bir karar alıcı ve girişimci olarak konumluyoruz."],
-    ["Ekonomiye temel yaklaşımınız nedir?","Rant ve dışa bağımlılık yerine üretim. İhtisas şehirciliği, adil ticaret ve kendine yeten bölgelerle borçlanmadan büyüyen bir ekonomi."],
-    ["Büyüme stratejiniz nedir?","Basit üründen yan teknolojilere, oradan yüksek katma değere uzanan bir üretim silsilesi; kendi kaynağıyla ve borçlanmadan büyüme."],
-    ["Genç işsizliğine çözümünüz nedir?","Gencin kendi şehrinde üretmesini sağlayan ihtisas üretim tesisleri, başlangıç sermayesi fonu, mentorluk ve belgeli mesleki kariyer yolları."],
-    ["Girişimciliğe nasıl yaklaşıyorsunuz?","Her vatandaşı potansiyel bir girişimci görürüz; erişilebilir finansman, mentorluk ve pazar açan bir ekosistem kurarız."],
-    ["Dijital dönüşüme bakışınız nedir?","e-Devlet, e-katılım ve açık veri; yerli yazılım, yapay zeka ve siber güvenlik; herkes için erişilebilir ve uygun maliyetli teknoloji."],
-    ["Kadınların siyasete ve ekonomiye katılımı?","Temsili artıran mekanizmalar (kota dahil), eşit işe eşit ücret, şiddetle etkin mücadele ve bakım yükünü paylaşan politikalar."],
-    ["İnsan haklarına yaklaşımınız nedir?","\u201cTek ırk tek insan\u201d: köken, inanç, dil veya cinsiyet ayrımı olmadan tam eşitlik; ifade, basın ve örgütlenme özgürlüğü; azınlık haklarının korunması."],
-    ["Hukukun üstünlüğü konusunda ne diyorsunuz?","Bağımsız ve tarafsız yargı, yürütmenin denetlenmesi, adil ve hızlı yargılama, tutukluluğun istisna olması."],
-    ["İfade ve basın özgürlüğü?","Özgür medya ve çoğulculuk demokrasinin temelidir; ifade özgürlüğünü ve çoğulcu bir kamusal alanı güvence altına alırız."],
-    ["Sosyal devlet anlayışınız nedir?","Kimseyi geride bırakmayan, şeffaf ve adil bir sosyal güvenlik; engelli erişilebilirliği; insana yakışır iş ve gelir güvencesi."],
-    ["Çevre ve iklim politikanız?","Yenilenebilir enerji, döngüsel ekonomi, doğa ve su kaynaklarının korunması, iklime uyum; yeşil üretim ve yeşil istihdam."],
-    ["Eğitim vizyonunuz nedir?","Üretimle bağlantılı uygulamalı eğitim (yaşayan okullar), fırsat eşitliği, öğretmenin niteliği ve akademik özgürlük."],
-    ["Sağlık politikanız nedir?","Herkes için erişilebilir, koruyucu ve nitelikli sağlık; bölgesel eşitsizliğin giderilmesi; yerli ilaç ve tıbbi üretim kapasitesi."],
-    ["Tarım ve gıda güvenliği?","Üreticiyi koruyan sürdürülebilir tarım, kooperatifleşme, gıda ve arz güvenliği, su ve toprak kaynaklarının korunması."],
-    ["Dış politikanız nasıl?","Sınır komşularıyla 20 yıllık saldırmazlık anlaşmaları, dezavantajlı ülkelere ciro primi, kültürlerin yerinde güçlenmesi ve ufukta küresel serbest dolaşım."],
-    ["Yolsuzlukla mücadele?","Açık veri, bağımsız denetim, liyakat ve şeffaf kamu ihalesi; kamu kaynağının izlenebilir olması."],
-    ["İttifaklara bakışınız?","İlkelerimizle (üretim, demokrasi, adalet) uyumlu ve halkın yararını gözeten iş birliklerine açığız; kadro ve program bütünlüğümüzü koruruz."],
-    ["İletişim","İletişim ve teşkilat bilgileri kuruluşla birlikte yayımlanacaktır. E-posta: iletisim@ileriparti.org"]
-  ];
-  var sboard = document.getElementById('sss-accord');
-  if (sboard){ sss.forEach(function(w,i){
-    var n = (i+1<10?'0':'')+(i+1);
-    var el = document.createElement('div'); el.className='ac';
-    el.innerHTML = '<button class="q"><span class="n">'+n+'</span><span>'+w[0]+'</span><svg class="pl" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="a"><p>'+w[1]+'</p></div>';
-    var q = el.querySelector('.q'), a = el.querySelector('.a');
-    q.addEventListener('click', function(){ var open = el.classList.toggle('open'); a.style.maxHeight = open ? (a.scrollHeight+'px') : '0'; });
-    sboard.appendChild(el);
-  }); }
-
-  var eylem = [
-    ["Ekonomi & Üretim", ["İhtisas şehirciliğiyle her ilde üretim odaklı bir uzmanlık alanı geliştirmek.","Rant yerine üretimi teşvik eden vergi ve kredi politikaları.","Kooperatif ve yerel marka üretimini desteklemek.","KOBİ ve girişimciye erişilebilir finansman ve pazar açmak.","Katma değeri artıran teknoloji ve tasarım yatırımı."]],
-    ["Adalet & Hukukun Üstünlüğü", ["Yargı bağımsızlığını ve tarafsızlığını güvence altına almak.","Liyakate dayalı, şeffaf atama ve terfi.","Adil ve hızlı yargılama; tutukluluğun istisna olması.","Hukuk önünde eşitlik ve etkin hak arama.","Yolsuzlukla mücadelede bağımsız denetim."]],
-    ["İnsan Hakları & Özgürlükler", ["\u201cTek ırk tek insan\u201d: her türlü ayrımcılığa karşı tam eşitlik.","İfade, basın, inanç ve örgütlenme özgürlüğünün güvencesi.","Azınlık ve dezavantajlı grupların haklarının korunması.","Uluslararası insan hakları standartlarına uyum.","Kişisel veri ve mahremiyetin korunması."]],
-    ["Eğitim", ["Üretimle bağlantılı, uygulamalı ve mesleki eğitim (yaşayan okullar).","Her bölgede nitelikli eğitime erişimde fırsat eşitliği.","Öğretmenin statüsünü ve niteliğini güçlendirmek.","Dijital okuryazarlık ve yaşam boyu öğrenme.","Bilimsel düşünce ve akademik özgürlük."]],
-    ["Sağlık", ["Herkes için erişilebilir, koruyucu ve nitelikli sağlık.","Bölgeler arası sağlık eşitsizliğini gidermek.","Sağlık çalışanının hakları ve güvenliği.","Ruh sağlığı ve önleyici hizmetlerin güçlendirilmesi.","Yerli ilaç ve tıbbi üretim kapasitesi."]],
-    ["Tarım & Gıda Güvenliği", ["Üreticiyi koruyan, sürdürülebilir tarım politikaları.","Kooperatifleşme ve yerel gıda ağları.","Gıda ve arz güvenliğinin sağlanması.","Su ve toprak kaynaklarının korunması.","Tarımda teknoloji ve katma değer."]],
-    ["Çevre & İklim", ["Yenilenebilir enerjiye geçiş ve enerji verimliliği.","Döngüsel ekonomi ve atık yönetimi.","Doğa, su ve biyoçeşitliliğin korunması.","İklim krizine uyum ve azaltım planları.","Yeşil üretim ve yeşil istihdam."]],
-    ["Gençlik", ["Kendi şehrinde üretim ve istihdamla göçü tersine çevirmek.","Girişimciye başlangıç sermayesi ve mentorluk.","Karar süreçlerinde güçlü genç temsili.","Belgeli, nitelikli mesleki kariyer yolları.","Kültür, spor ve sosyal alanlara erişim."]],
-    ["Kadın Hakları & Eşitlik", ["Siyasette ve ekonomide kadın temsilini artırmak (kota dahil).","Eşit işe eşit ücret ve fırsat eşitliği.","Kadına yönelik şiddetle etkin mücadele ve koruma.","Bakım yükünü paylaşan politikalar (kreş, izin).","Kadın girişimciliğine özel destek."]],
-    ["Çocuk & Aile", ["Çocuk işçiliğine son; eğitime tam erişim.","Çocuk hakları ve çevrimiçi güvenlik.","Erken çocukluk eğitimi ve sağlıklı beslenme.","Aileyi destekleyen sosyal hizmetler.","İstismara karşı güçlü koruma mekanizmaları."]],
-    ["Sosyal Devlet & Refah", ["Kimseyi geride bırakmayan sosyal güvenlik.","Şeffaf ve adil sosyal yardım.","Engelli bireyler için fiziksel ve dijital erişilebilirlik.","İnsana yakışır iş ve gelir güvencesi.","Bölgesel kalkınma farkını kapatmak."]],
-    ["Dijital Dönüşüm & Teknoloji", ["e-Devlet ve e-katılımın yaygınlaşması.","Açık veri ve şeffaf yönetim.","Erişilebilir ve uygun maliyetli internet ile teknoloji.","Yerli yazılım, yapay zeka ve siber güvenlik.","Dijital haklar ve veri mahremiyeti."]],
-    ["Dış Politika & Küresel Barış", ["Sınır komşularıyla 20 yıllık saldırmazlık anlaşmalarını teşvik.","Dezavantajlı ülkelere ciro primiyle adil ticaret.","Kültürlerin yerinde güçlenmesi ve demokrasiyle buluşması.","Ufuk ideali olarak küresel serbest dolaşımı savunmak.","İnsan hakları ve barış temelli onurlu diplomasi."]]
-  ];
-  var eboard = document.getElementById('eylem-accord');
-  if (eboard){ eylem.forEach(function(w,i){
-    var n = (i+1<10?'0':'')+(i+1);
-    var el = document.createElement('div'); el.className='ac';
-    var items = w[1].map(function(x){ return '<li style="position:relative; padding-left:20px; color:var(--ink-2); font-size:14.5px"><span style="position:absolute; left:0; top:8px; width:7px; height:7px; border-radius:50%; background:var(--red)"></span>'+x+'</li>'; }).join('');
-    el.innerHTML = '<button class="q"><span class="n">'+n+'</span><span>'+w[0]+'</span><svg class="pl" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="a"><ul style="margin:0; padding:14px 22px 22px 60px; list-style:none; display:flex; flex-direction:column; gap:10px">'+items+'</ul></div>';
-    var q = el.querySelector('.q'), a = el.querySelector('.a');
-    q.addEventListener('click', function(){ var open = el.classList.toggle('open'); a.style.maxHeight = open ? (a.scrollHeight+'px') : '0'; });
-    eboard.appendChild(el);
-  }); }
-
-  // Netlify Forms: AJAX submit + inline success (submissions go live once deployed on Netlify)
-  function wireForm(formId, msgId){
-    var form = document.getElementById(formId), msg = document.getElementById(msgId);
-    if(!form || !msg) return;
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      var body = new URLSearchParams(new FormData(form)).toString();
-      var done = function(){ form.style.display='none'; msg.classList.add('show'); msg.scrollIntoView({behavior:'smooth', block:'center'}); };
-      fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body}).then(done).catch(done);
-    });
-  }
-  wireForm('form-katilim','msg-katilim');
-  wireForm('form-iletisim','msg-iletisim');
-
-  var revs = document.querySelectorAll('.reveal');
-  if (reduce || !('IntersectionObserver' in window)) { revs.forEach(function(el){el.classList.add('in')}); }
-  else {
-    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); }, {threshold:.1, rootMargin:'0px 0px -6% 0px'});
-    revs.forEach(function(el){ io.observe(el); });
-  }
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>
