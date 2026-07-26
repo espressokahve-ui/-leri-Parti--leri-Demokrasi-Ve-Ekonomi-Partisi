@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detay — İleri Parti</title>
+<meta name="description" content="İleri Parti — detaylı bilgi">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23E11D2A'/%3E%3Cg fill='none' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M34 33 46 50 34 67'/%3E%3Cpath d='M48 33 60 50 48 67'/%3E%3Cpath d='M62 33 74 50 62 67'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .d-header{position:sticky; top:0; z-index:50; background:var(--white); border-bottom:1px solid var(--line); padding:13px 22px}
+  .d-header-in{max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px}
+  .d-brand{display:flex; align-items:center; gap:12px; text-decoration:none}
+  .d-brand .bt b{font-family:"Archivo"; font-weight:800; font-size:19px; color:var(--ink); display:block; line-height:1.05}
+  .d-brand .bt span{font-size:11px; color:var(--ink-3)}
+  .d-main{max-width:760px; margin:0 auto; padding:40px 22px 80px}
+  .d-back{display:inline-flex; align-items:center; gap:7px; color:var(--red-d); font-weight:600; font-size:14px; text-decoration:none; margin-bottom:22px; background:none; border:none; cursor:pointer; padding:0}
+  .d-back:hover{gap:10px}
+  .d-eyebrow{font-family:"IBM Plex Mono"; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--red-d)}
+  .d-title{font-family:"Archivo"; font-weight:800; font-size:clamp(28px,5vw,40px); line-height:1.12; margin:10px 0 24px}
+  .d-icerik{color:var(--ink-2); font-size:16.5px; line-height:1.85; white-space:pre-wrap}
+  .d-foot{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-top:36px; padding-top:24px; border-top:1px solid var(--line)}
+  .d-foot .share-label{font-size:13px; color:var(--ink-3); margin-right:2px}
+  .d-ftr{background:var(--ink); color:#9aa3ad; text-align:center; padding:26px 20px; font-size:13px}
+</style>
+</head>
+<body>
+<header class="d-header">
+  <div class="d-header-in">
+    <a class="d-brand" href="index.html">
+      <svg width="42" height="42" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#E11D2A"/><g fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M34 33 46 50 34 67"/><path d="M48 33 60 50 48 67"/><path d="M62 33 74 50 62 67"/></g></svg>
+      <span class="bt"><b>İLERİ PARTİ</b><span>İleri Demokrasi ve Ekonomi Partisi</span></span>
+    </a>
+    <a class="btn btn-ghost" href="index.html">Ana sayfa</a>
+  </div>
+</header>
+
+<main class="d-main">
+  <a class="d-back" href="index.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> Ana sayfaya dön</a>
+  <div class="d-eyebrow">İleri Parti</div>
+  <h1 class="d-title" id="d-baslik">Detay</h1>
+  <div class="d-icerik" id="d-icerik">Yükleniyor…</div>
+  <div class="d-foot">
+    <button class="like-btn" id="d-like">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg>
+      <span id="d-like-n">0</span> beğeni
+    </button>
+    <div class="share-row">
+      <span class="share-label">Paylaş:</span>
+      <a id="sh-wa" target="_blank" rel="noopener" title="WhatsApp'ta paylaş" aria-label="WhatsApp'ta paylaş"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.7-.85-2-.95-.26-.1-.45-.15-.64.15-.19.28-.73.94-.9 1.13-.16.19-.33.21-.61.07-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.73-1.63-2.02-.17-.29-.02-.44.13-.59.13-.13.29-.33.44-.5.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.08-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49l-.55-.01c-.19 0-.5.07-.76.36-.26.28-1 .98-1 2.38s1.02 2.76 1.17 2.95c.15.19 2.01 3.07 4.87 4.31.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.12.55-.08 1.7-.69 1.94-1.37.24-.67.24-1.25.17-1.37-.07-.12-.26-.19-.55-.33zM12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2z"/></svg></a>
+      <a id="sh-x" target="_blank" rel="noopener" title="X'te paylaş" aria-label="X'te paylaş"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2h3.3l-7.2 8.3L23.5 22h-6.6l-5.2-6.8L5.7 22H2.4l7.7-8.8L1.5 2h6.8l4.7 6.2L18.9 2zm-1.2 18h1.8L7.4 3.8H5.5L17.7 20z"/></svg></a>
+      <a id="sh-fb" target="_blank" rel="noopener" title="Facebook'ta paylaş" aria-label="Facebook'ta paylaş"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg></a>
+      <button id="sh-copy" title="Bağlantıyı kopyala" aria-label="Bağlantıyı kopyala"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+    </div>
+  </div>
+</main>
+
+<footer class="d-ftr">© 2026 İleri Parti — İleri Demokrasi ve Ekonomi Partisi</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  var SUPABASE_URL="https://uyjbeehtxryokwvgctuk.supabase.co";
+  var SUPABASE_ANON_KEY="sb_publishable_9xesHzzQ5w8__dkaWI1uqw_05ZH0ogL";
+  var SB=(SUPABASE_URL&&SUPABASE_ANON_KEY&&window.supabase)?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
+
+  var params=new URLSearchParams(location.search);
+  var key=params.get('k')||'', title=params.get('t')||'Detay', summary=params.get('s')||'';
+  var elBaslik=document.getElementById('d-baslik'), elIcerik=document.getElementById('d-icerik');
+  var likeBtn=document.getElementById('d-like'), likeN=document.getElementById('d-like-n');
+  elBaslik.textContent=title; document.title=title+' — İleri Parti';
+  elIcerik.textContent=summary||'Bu başlığın ayrıntısı yakında eklenecek.';
+
+  var shareUrl=location.origin+location.pathname+'?k='+encodeURIComponent(key)+'&t='+encodeURIComponent(title);
+  var txt=encodeURIComponent(title+' — İleri Parti'), u=encodeURIComponent(shareUrl);
+  document.getElementById('sh-wa').href='https://wa.me/?text='+txt+'%20'+u;
+  document.getElementById('sh-x').href='https://twitter.com/intent/tweet?text='+txt+'&url='+u;
+  document.getElementById('sh-fb').href='https://www.facebook.com/sharer/sharer.php?u='+u;
+  document.getElementById('sh-copy').addEventListener('click',function(){ var b=this; if(navigator.clipboard){ navigator.clipboard.writeText(shareUrl); b.title='Kopyalandı!'; setTimeout(function(){b.title='Bağlantıyı kopyala';},1500);} });
+
+  function liked(k){ try{return localStorage.getItem('begeni_'+k)==='1';}catch(e){return false;} }
+  function markLiked(k){ try{localStorage.setItem('begeni_'+k,'1');}catch(e){} }
+  likeBtn.classList.toggle('liked', liked(key));
+
+  if(SB && key){
+    SB.from('detaylar').select('icerik,baslik').eq('anahtar',key).maybeSingle().then(function(res){
+      if(res.data){
+        if(res.data.icerik){ elIcerik.textContent=res.data.icerik; }
+        if(res.data.baslik){ elBaslik.textContent=res.data.baslik; document.title=res.data.baslik+' — İleri Parti'; }
+      }
+    });
+    SB.from('begeniler').select('sayi').eq('anahtar',key).maybeSingle().then(function(res){
+      likeN.textContent=(res.data&&res.data.sayi!=null)?res.data.sayi:'0';
+    });
+  }
+
+  likeBtn.addEventListener('click',function(){
+    if(!key||!SB) return;
+    if(liked(key)) return;
+    SB.rpc('begeni_ekle',{p_anahtar:key}).then(function(res){
+      if(!res.error&&res.data!=null){ likeN.textContent=res.data; markLiked(key); likeBtn.classList.add('liked'); }
+    });
+  });
+</script>
+</body>
+</html>
