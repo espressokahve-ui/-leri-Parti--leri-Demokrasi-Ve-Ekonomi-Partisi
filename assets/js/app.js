@@ -232,14 +232,24 @@
     ["İletişim","İletişim ve teşkilat bilgileri kuruluşla birlikte yayımlanacaktır. E-posta: iletisim@ileriparti.org"]
   ];
   var sboard = document.getElementById('sss-accord');
-  if (sboard){ sss.forEach(function(w,i){
-    var n = (i+1<10?'0':'')+(i+1);
-    var el = document.createElement('div'); el.className='ac';
-    el.innerHTML = '<button class="q"><span class="n">'+n+'</span><span>'+w[0]+'</span><svg class="pl" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="a"><p>'+w[1]+'</p></div>';
-    var q = el.querySelector('.q'), a = el.querySelector('.a');
-    q.addEventListener('click', function(){ var open = el.classList.toggle('open'); a.style.maxHeight = open ? (a.scrollHeight+'px') : '0'; });
-    sboard.appendChild(el);
-  }); }
+  function renderSSS(){
+    if(!sboard) return;
+    sboard.innerHTML='';
+    sss.forEach(function(w,i){
+      var n = (i+1<10?'0':'')+(i+1);
+      var el = document.createElement('div'); el.className='ac';
+      el.innerHTML = '<button class="q"><span class="n">'+n+'</span><span>'+w[0]+'</span><svg class="pl" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="a"><p>'+w[1]+'</p></div>';
+      var q = el.querySelector('.q'), a = el.querySelector('.a');
+      q.addEventListener('click', function(){ var open = el.classList.toggle('open'); a.style.maxHeight = open ? (a.scrollHeight+'px') : '0'; });
+      sboard.appendChild(el);
+    });
+  }
+  renderSSS();
+  if (window.SB){
+    SB.from('sorular').select('soru,cevap').order('sira',{ascending:true}).then(function(res){
+      if(!res.error && res.data && res.data.length){ sss = res.data.map(function(r){ return [r.soru, r.cevap]; }); renderSSS(); }
+    });
+  }
 
   var eylem = [
     ["Ekonomi & Üretim", ["İhtisas şehirciliğiyle her ilde üretim odaklı bir uzmanlık alanı geliştirmek.","Rant yerine üretimi teşvik eden vergi ve kredi politikaları.","Kooperatif ve yerel marka üretimini desteklemek.","KOBİ ve girişimciye erişilebilir finansman ve pazar açmak.","Katma değeri artıran teknoloji ve tasarım yatırımı."]],
@@ -483,55 +493,14 @@
     });
   })();
 
-  // ---- Detay + Beğeni + Paylaşım ----
+  // ---- Detay sayfasına yönlendirme ----
   (function(){
-    var modal=document.getElementById('detay-modal'); if(!modal) return;
-    var mBaslik=document.getElementById('detay-baslik'), mIcerik=document.getElementById('detay-icerik');
-    var likeBtn=document.getElementById('detay-like'), likeN=document.getElementById('detay-like-n');
-    var curKey=null;
-    function closeM(){ modal.classList.remove('show'); }
-    document.getElementById('detay-x').addEventListener('click', closeM);
-    modal.addEventListener('click', function(e){ if(e.target===modal) closeM(); });
-    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeM(); });
-
-    function setShare(baslik){
-      var url=location.origin+location.pathname;
-      var txt=encodeURIComponent(baslik+' — İleri Parti'), u=encodeURIComponent(url);
-      document.getElementById('sh-wa').href='https://wa.me/?text='+txt+'%20'+u;
-      document.getElementById('sh-x').href='https://twitter.com/intent/tweet?text='+txt+'&url='+u;
-      document.getElementById('sh-fb').href='https://www.facebook.com/sharer/sharer.php?u='+u;
-    }
-    document.getElementById('sh-copy').addEventListener('click', function(){
-      var url=location.origin+location.pathname, b=this;
-      if(navigator.clipboard){ navigator.clipboard.writeText(url); b.title='Kopyalandı!'; setTimeout(function(){ b.title='Bağlantıyı kopyala'; },1500); }
-    });
-
-    function liked(k){ try{ return localStorage.getItem('begeni_'+k)==='1'; }catch(e){ return false; } }
-    function markLiked(k){ try{ localStorage.setItem('begeni_'+k,'1'); }catch(e){} }
-
-    function openM(key, baslik, fallback){
-      curKey=key; mBaslik.innerHTML=baslik; mIcerik.textContent=fallback||'';
-      likeN.textContent='0'; likeBtn.classList.toggle('liked', liked(key));
-      setShare(mBaslik.textContent); modal.classList.add('show');
-      if(!SB) return;
-      SB.from('detaylar').select('icerik').eq('anahtar',key).maybeSingle().then(function(res){
-        if(res.data && res.data.icerik){ mIcerik.textContent=res.data.icerik; }
-      });
-      SB.from('begeniler').select('sayi').eq('anahtar',key).maybeSingle().then(function(res){
-        likeN.textContent=(res.data && res.data.sayi!=null) ? res.data.sayi : '0';
-      });
+    function openM(key, baslik, summary){
+      var u='detay.html?k='+encodeURIComponent(key)+'&t='+encodeURIComponent(baslik||'');
+      if(summary){ u+='&s='+encodeURIComponent(summary); }
+      location.href=u;
     }
     window.__openDetay = openM;
-
-    likeBtn.addEventListener('click', function(){
-      if(!curKey) return;
-      if(!SB){ return; }
-      if(liked(curKey)) return;
-      SB.rpc('begeni_ekle', { p_anahtar: curKey }).then(function(res){
-        if(!res.error && res.data!=null){ likeN.textContent=res.data; markLiked(curKey); likeBtn.classList.add('liked'); }
-      });
-    });
-
     document.querySelectorAll('[data-detay]').forEach(function(el){
       function go(){ var p=el.querySelector('p'); openM(el.getAttribute('data-detay'), el.getAttribute('data-baslik')||'', p?p.textContent:''); }
       el.addEventListener('click', go);
